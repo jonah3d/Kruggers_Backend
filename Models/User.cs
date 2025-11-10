@@ -21,6 +21,7 @@ public class User
     public string? Phone { get; set; }
 
 
+    [Column(TypeName = "date")]
     public DateTime? DateOfBirth { get; set; }
         
     public string HashedPassword { get; set; }

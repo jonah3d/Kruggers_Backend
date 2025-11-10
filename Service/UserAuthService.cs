@@ -26,7 +26,7 @@ public class UserAuthService : IUserAuthRepository
     
     public async Task<bool> CreateUserAsync(UserRegistrationDTO userRegistrationDto)
     {
-        if (userRegistrationDto == null) return false;
+       
 
         try
         {
@@ -64,10 +64,7 @@ public class UserAuthService : IUserAuthRepository
 
     public async Task<UserLoginResponseDTO> LoginUser(UserLoginDTO userLoginDto)
     {
-        if (userLoginDto == null)
-        {
-            return null;
-        }
+       
 
         try
         {

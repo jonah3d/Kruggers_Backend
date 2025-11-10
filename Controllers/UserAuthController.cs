@@ -19,6 +19,11 @@ public class UserAuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody]UserRegistrationDTO dto)
     {
+        if (dto == null)
+        {
+            return BadRequest("User Is Null");
+        }
+        
         var result = await _userAuthRepository.CreateUserAsync(dto);
         return Ok(result);
     }
