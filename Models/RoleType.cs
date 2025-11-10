@@ -1,6 +1,8 @@
 namespace Kruggers_Backend.Models;
 
-public class RoleType
+public enum RoleType
 {
-    
+    CREATOR,
+
+    CONSUMER
 }

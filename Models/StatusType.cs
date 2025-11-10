@@ -1,6 +1,14 @@
 namespace Kruggers_Backend.Models;
 
-public class StatusType
+public enum StatusType
 {
-    
+    CLOSED_REJECTED,
+
+    CLOSED_RESOLVED,
+
+    OPEN_ASSIGNED,
+
+    OPEN_REQUESTED,
+
+    OPEN_COOKING
 }
