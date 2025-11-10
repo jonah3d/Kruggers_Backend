@@ -12,11 +12,13 @@ public class UserService : IUserRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly CloudinaryService _cloudinaryService;
 
-    public UserService(ApplicationDbContext context,IPasswordHasher<User> passwordHasher)
+    public UserService(ApplicationDbContext context,IPasswordHasher<User> passwordHasher,CloudinaryService cloudinaryService)
     {
         _context = context;
         _passwordHasher = passwordHasher;
+        _cloudinaryService = cloudinaryService;
     }
 
     public async Task<User?> GetUserByIdAsync(int id)
@@ -26,7 +28,7 @@ public class UserService : IUserRepository
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public async Task<bool> UpdateUserAsync(User userToUpdate, UserUpdateDTO patchedDto)
+    public async Task<bool> UpdateUserAsync(User userToUpdate, UserUpdateDTO patchedDto,IFormFile? profileImage = null)
     {
    
         var dbUser = await _context.Users.Include(U=> U.Role).SingleOrDefaultAsync(u => u.Id == userToUpdate.Id);
@@ -37,7 +39,13 @@ public class UserService : IUserRepository
         dbUser.Email = patchedDto.Email;
         dbUser.Phone = patchedDto.Phone;
         dbUser.DateOfBirth = patchedDto.DateOfBirth;
-        dbUser.ProfileImage = patchedDto.ProfileImage;
+       // dbUser.ProfileImage = patchedDto.ProfileImage;
+       if (profileImage != null)
+       {
+           var imageUrl = await _cloudinaryService.UploadImageAsync(profileImage);
+           if (!string.IsNullOrEmpty(imageUrl))
+               dbUser.ProfileImage = imageUrl;
+       }
 
      
         if (!string.IsNullOrEmpty(patchedDto.Password))

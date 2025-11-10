@@ -1,4 +1,6 @@
 using System.Text;
+using CloudinaryDotNet;
+using dotenv.net;
 using Kruggers_Backend.Configuration;
 using Kruggers_Backend.Models;
 using Kruggers_Backend.Repositories;
@@ -18,6 +20,10 @@ builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+DotEnv.Load(options: new DotEnvOptions(probeForEnv: true));
+Cloudinary cloudinary = new Cloudinary(Environment.GetEnvironmentVariable("CLOUDINARY_URL"));
+cloudinary.Api.Secure = true;
 
 // Configure JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
@@ -43,7 +49,8 @@ builder.Services.AddAuthentication(options =>
     });
 
 
-
+builder.Services.AddSingleton(cloudinary);
+builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<IUserAuthRepository, UserAuthService>();
 builder.Services.AddScoped<IUserRepository, UserService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
