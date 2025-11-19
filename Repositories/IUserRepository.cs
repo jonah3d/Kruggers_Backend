@@ -8,6 +8,10 @@ public interface IUserRepository
 {
 
     Task<User?> GetUserByIdAsync(int id);
+    Task<UserDTO?> GetUserByUserNameAsync(string? username);
+    Task<IEnumerable<UserDTO>>GetAllUsersAsync();
     Task<bool> UpdateUserAsync(User userToUpdate, UserUpdateDTO patchedDto,IFormFile? profileImage);
     Task<Role?> GetRoleByNameAsync(string roleName);
+    Task<IEnumerable<User>> GetAllCreators();
+    Task<IEnumerable<User>> GetAllConsumers();
 }

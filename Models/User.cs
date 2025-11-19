@@ -28,7 +28,7 @@ public class User
 
 
     public string? ProfileImage { get; set; }
-
+    public string? ProfileImageId { get; set; }
 
     [ForeignKey("Role")] public int RoleId { get; set; }
 

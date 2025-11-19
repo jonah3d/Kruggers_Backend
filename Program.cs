@@ -53,6 +53,7 @@ builder.Services.AddSingleton(cloudinary);
 builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<IUserAuthRepository, UserAuthService>();
 builder.Services.AddScoped<IUserRepository, UserService>();
+builder.Services.AddScoped<ITaskRepository, TaskService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 var app = builder.Build();

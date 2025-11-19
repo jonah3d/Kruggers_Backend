@@ -14,88 +14,71 @@ public class UserController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
 
-    public UserController(IUserRepository  userRepository)
+    public UserController(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
-    
-    /*[HttpPatch("{id}")]
-    public async Task<IActionResult> PatchUser(int id, [FromBody] JsonPatchDocument<UserUpdateDTO> patchDoc,IFormFile? profileImage)
+
+    [HttpGet("{username}")]
+    public async Task<IActionResult> GetUserByUsername(string username)
     {
-        if (patchDoc == null)
+        if(string.IsNullOrWhiteSpace(username))
         {
-            return BadRequest();
+            return BadRequest("Username cannot be null or empty.");
         }
-
+        try
+        {
+            var user = await _userRepository.GetUserByUserNameAsync(username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         
-        var dbUser = await _userRepository.GetUserByIdAsync(id);
-        if (dbUser == null)
+        }catch(Exception ex)
         {
-            return NotFound();
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
 
 
-        var userToPatch = new UserUpdateDTO
+    [HttpGet]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        try
         {
-            Name = dbUser.Name,
-            LastName = dbUser.LastName,
-            Email = dbUser.Email,
-            Phone = dbUser.Phone,
-            DateOfBirth = dbUser.DateOfBirth,
-            ProfileImage = dbUser.ProfileImage,
-            UserRole = dbUser.Role.RoleType.ToString(),
-            Password = null
-        };
-
-
-        patchDoc.ApplyTo(userToPatch, ModelState);
-
-
-        if (!TryValidateModel(userToPatch))
-        {
-            return ValidationProblem(ModelState);
+            var users = await _userRepository.GetAllUsersAsync();
+            if (users == null) {
+                return NotFound();
+            }
+            return Ok(users);
         }
-
- 
-        var updateResult = await _userRepository.UpdateUserAsync(dbUser, userToPatch, profileImage);
-
-        if (!updateResult)
+        catch (Exception ex)
         {
-  
-            ModelState.AddModelError("Error", "Unable to update user");
-            return BadRequest(ModelState);
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
 
-        return NoContent(); // Success
-    }*/
 
     [HttpPatch("{id}")]
     public async Task<IActionResult> PatchUser(
         int id,
-        [FromForm] string patchJson,
-        IFormFile? profileImage)
+        [FromForm] string? patchJson,  
+        [FromForm] IFormFile? profileImage) 
     {
-        if (string.IsNullOrWhiteSpace(patchJson))
-            return BadRequest("Missing patch document.");
-
-        JsonPatchDocument<UserUpdateDTO>? patchDoc;
-
-        try
+        
+        if (string.IsNullOrWhiteSpace(patchJson) && profileImage == null)
         {
-            patchDoc = JsonConvert.DeserializeObject<JsonPatchDocument<UserUpdateDTO>>(patchJson);
+            return BadRequest("No update data provided.");
         }
-        catch (JsonException)
-        {
-            return BadRequest("Invalid JSON patch document.");
-        }
-
-        if (patchDoc == null)
-            return BadRequest("Failed to parse patch document.");
 
         var dbUser = await _userRepository.GetUserByIdAsync(id);
         if (dbUser == null)
+        {
             return NotFound();
+        }
 
+        
         var userToPatch = new UserUpdateDTO
         {
             Name = dbUser.Name,
@@ -108,11 +91,33 @@ public class UserController : ControllerBase
             Password = null
         };
 
-        patchDoc.ApplyTo(userToPatch, ModelState);
+        
+        if (!string.IsNullOrWhiteSpace(patchJson))
+        {
+            JsonPatchDocument<UserUpdateDTO>? patchDoc;
+            try
+            {
+                patchDoc = JsonConvert.DeserializeObject<JsonPatchDocument<UserUpdateDTO>>(patchJson);
+            }
+            catch (JsonException ex)
+            {
+                return BadRequest($"Invalid JSON patch document: {ex.Message}");
+            }
 
-        if (!TryValidateModel(userToPatch))
-            return ValidationProblem(ModelState);
+            if (patchDoc == null)
+            {
+                return BadRequest("Failed to parse patch document.");
+            }
 
+            patchDoc.ApplyTo(userToPatch, ModelState);
+
+            if (!TryValidateModel(userToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+        }
+
+       
         var updateResult = await _userRepository.UpdateUserAsync(dbUser, userToPatch, profileImage);
 
         if (!updateResult)
@@ -121,7 +126,8 @@ public class UserController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        return NoContent();
+        return NoContent(); 
     }
+
 
 }
