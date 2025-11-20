@@ -7,6 +7,8 @@
 
     public class ConsumerTaskResponseDTO
     {
+        
+        public int TaskId { get; set; }
         public string RequestedBy { get; set; }
         public string AssignedTo { get; set; }
         public string Description { get; set; }

@@ -154,6 +154,7 @@ namespace Kruggers_Backend.Controllers
             {
                 taskDTOs.Add(new CreatorTaskResponseDTO
                 {
+                    TaskId = item.Id,
                     AssignedTo = item.Creator.Username,
                     RequestedBy = item.Consumer.Username,
                     Description = item.Description,
@@ -201,6 +202,7 @@ namespace Kruggers_Backend.Controllers
             {
                 taskDTOs.Add(new ConsumerTaskResponseDTO
                 {
+                    TaskId = item.Id,
                     RequestedBy = item.Consumer.Username,
                     AssignedTo = item.Creator.Username,
                     Description = item.Description,
