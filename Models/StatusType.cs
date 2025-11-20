@@ -6,6 +6,8 @@ public enum StatusType
 
     CLOSED_RESOLVED,
 
+    CLOSED_CANCELLED,
+
     OPEN_ASSIGNED,
 
     OPEN_REQUESTED,

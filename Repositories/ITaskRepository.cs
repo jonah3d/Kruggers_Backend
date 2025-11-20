@@ -9,8 +9,8 @@ namespace Kruggers_Backend.Repositories
         Task<IEnumerable<ImageTask>> GetAllTasksAsync();
         Task<int> GetTaskByIdAsync(int taskId);
         
-        Task<IEnumerable<ImageTask>> GetCreatorAssignedTaskAsync(int creatorId);
-        Task<IEnumerable<ImageTask>> GetConsumerRequestedTaskAsync(int consumerId);
+        Task<IEnumerable<ImageTask>> GetCreatorAssignedTaskAsync(string creatorUsername);
+        Task<IEnumerable<ImageTask>> GetConsumerRequestedTaskAsync(string consumerUsername);
        // Task<Task> UpdateTaskStatusAsync(int taskId, int statusId);
     }
 }

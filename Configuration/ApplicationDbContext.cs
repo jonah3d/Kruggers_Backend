@@ -44,7 +44,8 @@ public class ApplicationDbContext :  DbContext
         new Status { Id = 2, StatusType = StatusType.OPEN_REQUESTED.ToString() },
         new Status { Id = 3, StatusType = StatusType.OPEN_COOKING.ToString() },
         new Status { Id = 4, StatusType = StatusType.CLOSED_REJECTED.ToString() },
-        new Status { Id = 5, StatusType = StatusType.CLOSED_RESOLVED.ToString() }
+        new Status { Id = 5, StatusType = StatusType.CLOSED_RESOLVED.ToString() },
+        new Status { Id = 6, StatusType = StatusType.CLOSED_CANCELLED.ToString() }
     );
 
 

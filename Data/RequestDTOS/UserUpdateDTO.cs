@@ -1,4 +1,4 @@
-namespace Kruggers_Backend.Data;
+namespace Kruggers_Backend.Data.RequestDTOS;
 
 public class UserUpdateDTO
 {

@@ -1,4 +1,4 @@
-using Kruggers_Backend.Data;
+using Kruggers_Backend.Data.RequestDTOS;
 using Kruggers_Backend.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

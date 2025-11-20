@@ -1,6 +1,6 @@
-﻿namespace Kruggers_Backend.Data
+﻿namespace Kruggers_Backend.Data.RequestDTOS
 {
-    public class ImageaskRequestDTO
+    public class ImageTaskRequestDTO
     {
         public int ConsumerId { get; set; }
         public int? CreatorId { get; set; }

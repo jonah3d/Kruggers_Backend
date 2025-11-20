@@ -1,4 +1,3 @@
-using System.Text;
 using CloudinaryDotNet;
 using dotenv.net;
 using Kruggers_Backend.Configuration;
@@ -8,8 +7,10 @@ using Kruggers_Backend.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +26,13 @@ DotEnv.Load(options: new DotEnvOptions(probeForEnv: true));
 Cloudinary cloudinary = new Cloudinary(Environment.GetEnvironmentVariable("CLOUDINARY_URL"));
 cloudinary.Api.Secure = true;
 
+
+
 // Configure JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+
+System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(options =>
     {

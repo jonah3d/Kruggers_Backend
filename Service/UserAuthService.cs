@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using Kruggers_Backend.Configuration;
 using Kruggers_Backend.Data;
+using Kruggers_Backend.Data.RequestDTOS;
+using Kruggers_Backend.Data.ResponseDTOS;
 using Kruggers_Backend.Models;
 using Kruggers_Backend.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -62,7 +64,7 @@ public class UserAuthService : IUserAuthRepository
         }
     }
 
-    public async Task<UserLoginResponseDTO> LoginUser(UserLoginDTO userLoginDto)
+    public async Task<UserLoginResponseDTO> LoginUser(UserLoginRequestDTO userLoginDto)
     {
        
 

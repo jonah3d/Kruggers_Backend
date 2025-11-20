@@ -7,16 +7,16 @@
 
         public string Name
         {
-            private get;
+             get;
             set;
         }
 
         public string LastName
         {
-            private get;
+             get;
             set;
         }
 
-        public string FullName => $"{Name} {LastName}";
+     
     }
 }

@@ -1,4 +1,5 @@
-using Kruggers_Backend.Data;
+using Kruggers_Backend.Data.RequestDTOS;
+using Kruggers_Backend.Data.ResponseDTOS;
 using Kruggers_Backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,7 @@ public class UserAuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<UserLoginResponseDTO>> Login([FromBody] UserLoginDTO dto)
+    public async Task<ActionResult<UserLoginResponseDTO>> Login([FromBody] UserLoginRequestDTO dto)
     {
         if (dto == null)
         {

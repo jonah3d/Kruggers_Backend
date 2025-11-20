@@ -57,14 +57,26 @@ namespace Kruggers_Backend.Service
             return tasks;
         }
 
-        public Task<IEnumerable<ImageTask>> GetConsumerRequestedTaskAsync(int consumerId)
+        public async Task<IEnumerable<ImageTask>> GetConsumerRequestedTaskAsync(string consumerUsername)
         {
-            throw new NotImplementedException();
+            return await context.ImageTasks
+                                .Where(t => t.Consumer.Username == consumerUsername)
+                                .Include(t => t.Consumer)
+                                .Include(t => t.Creator)
+                                .Include(t => t.Status)
+                                .OrderBy(t => t.CreatedDate)
+                                .ToListAsync();
         }
 
-        public Task<IEnumerable<ImageTask>> GetCreatorAssignedTaskAsync(int creatorId)
+        public async Task<IEnumerable<ImageTask>> GetCreatorAssignedTaskAsync(string creatorUsername)
         {
-            throw new NotImplementedException();
+            return await context.ImageTasks
+                                .Where(t => t.Creator.Username == creatorUsername)
+                                .Include(t => t.Consumer)
+                                .Include(t => t.Creator)
+                                .Include(t => t.Status)
+                                .OrderBy(t => t.CreatedDate)
+                                .ToListAsync();
         }
 
         public Task<int> GetTaskByIdAsync(int taskId)
